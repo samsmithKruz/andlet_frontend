@@ -1,11 +1,7 @@
 import { useState, useEffect } from "react";
 import { offlineManager } from "@/lib/offline";
 
-export function useOfflineData<T>(
-  key: string,
-  fetcher: () => Promise<T>,
-  options?: { cacheTime?: number },
-) {
+export function useOfflineData<T>(key: string, fetcher: () => Promise<T>) {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
