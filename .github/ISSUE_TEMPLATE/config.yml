@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Documentation
+    url: https://github.com/Kudagon/andlet_frontend/wiki
+    about: Please check the documentation before creating a new issue.
+  - name: 💬 Discussions
+    url: https://github.com/Kudagon/andlet_frontend/discussions
+    about: For questions, ideas, or general conversations, please use GitHub Discussions.
