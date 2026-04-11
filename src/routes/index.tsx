@@ -26,7 +26,7 @@ export const router = createBrowserRouter([
   {
     path: "/",
     errorElement: <ErrorBoundary />,
-    element: <MainLayout />,
+    element: <MainLayout key={location.pathname} />,
     children: [
       createRoute("/", () => import("@/pages/HomePage"), { index: true }),
       createRoute("/contact", () => import("@/pages/ContactPage")),
