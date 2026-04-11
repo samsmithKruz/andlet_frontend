@@ -3,18 +3,13 @@ import { X, Download, Smartphone, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { isRunningAsPWA } from "@/lib/pwa-detection";
 import { showToast } from "@/lib/toast";
-
-interface BeforeInstallPromptEvent extends Event {
-  prompt: () => Promise<void>;
-  userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
-}
+import { usePWAInstall } from "@/hooks/usePWAInstall";
 
 const BANNER_DISMISSED_KEY = "andlet-banner-dismissed-timestamp";
 const BANNER_COOLDOWN_MS = 60000; // 60 seconds
 
 export function InstallBanner() {
-  const [deferredPrompt, setDeferredPrompt] =
-    useState<BeforeInstallPromptEvent | null>(null);
+  const { install, isInstallable } = usePWAInstall();
   const [showBanner, setShowBanner] = useState(false);
 
   useEffect(() => {
@@ -30,66 +25,20 @@ export function InstallBanner() {
     if (dismissedTimestamp) {
       const timeSinceDismissal = now - parseInt(dismissedTimestamp, 10);
       if (timeSinceDismissal < BANNER_COOLDOWN_MS) {
-        // Still in cooldown period - don't show banner
         return;
       } else {
-        // Cooldown expired, clear the stored timestamp
         localStorage.removeItem(BANNER_DISMISSED_KEY);
       }
     }
 
-    // Show banner immediately
     setShowBanner(true);
-
-    // Listen for install prompt (for Android/Chrome install button)
-    const handleBeforeInstallPrompt = (e: Event) => {
-      e.preventDefault();
-      setDeferredPrompt(e as BeforeInstallPromptEvent);
-    };
-
-    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-
-    return () => {
-      window.removeEventListener(
-        "beforeinstallprompt",
-        handleBeforeInstallPrompt,
-      );
-    };
   }, []);
 
   const handleInstall = async () => {
-    if (deferredPrompt) {
-      try {
-        await deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-
-        if (outcome === "accepted") {
-          setShowBanner(false);
-          localStorage.removeItem(BANNER_DISMISSED_KEY);
-          showToast.success("Andlet installed!", {
-            description: "Welcome to the full experience!",
-          });
-        } else {
-          showToast.info("Installation required", {
-            description: "Please install Andlet for the best experience",
-            duration: 3000,
-          });
-        }
-      } catch (error) {
-        showToast.error("Installation failed", {
-          description: "Please try again",
-        });
-      }
-      setDeferredPrompt(null);
-    } else {
-      // iOS - show instructions
-      const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-      if (isiOS) {
-        showToast.custom("Install Andlet on iOS", {
-          description: "Tap Share → Add to Home Screen",
-          duration: 5000,
-        });
-      }
+    const success = await install();
+    if (success) {
+      setShowBanner(false);
+      localStorage.removeItem(BANNER_DISMISSED_KEY);
     }
   };
 
@@ -103,8 +52,6 @@ export function InstallBanner() {
 
   const handleDismiss = () => {
     setShowBanner(false);
-
-    // Store dismissal timestamp
     localStorage.setItem(BANNER_DISMISSED_KEY, Date.now().toString());
 
     showToast.info("Install Andlet", {
