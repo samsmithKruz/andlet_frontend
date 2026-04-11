@@ -11,10 +11,10 @@ import { OfflineIndicator } from "./components/ui/offline-indicator.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ThemeProvider defaultTheme="system" storageKey="andlet-theme">
+    <ThemeProvider>
+      <OfflineIndicator />
       <RouterProvider router={router} />
       <Toaster />
-      <OfflineIndicator />
     </ThemeProvider>
   </StrictMode>,
 );

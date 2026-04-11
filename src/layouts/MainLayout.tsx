@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Home, Search, User, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { InstallBanner } from "@/components/ui/install-banner";
 
 export default function MainLayout() {
   return (
@@ -40,15 +41,24 @@ export default function MainLayout() {
       {/* Mobile bottom navigation */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="flex items-stretch justify-items-stretch h-16">
-            <Link className="p-1 flex-1 flex items-center flex-col gap-1 justify-center hover:bg-primary/5" to="/">
-              <Home className="h-5 w-5" />
-            </Link>
-            <Link className="p-1 flex-1 flex items-center flex-col gap-1 justify-center hover:bg-primary/5" to="/listings">
-              <Search className="h-5 w-5" />
-            </Link>
-            <Link className="p-1 flex-1 flex items-center flex-col gap-1 justify-center hover:bg-primary/5" to="/dashboard">
-              <User className="h-5 w-5" />
-            </Link>
+          <Link
+            className="p-1 flex-1 flex items-center flex-col gap-1 justify-center hover:bg-primary/5"
+            to="/"
+          >
+            <Home className="h-5 w-5" />
+          </Link>
+          <Link
+            className="p-1 flex-1 flex items-center flex-col gap-1 justify-center hover:bg-primary/5"
+            to="/listings"
+          >
+            <Search className="h-5 w-5" />
+          </Link>
+          <Link
+            className="p-1 flex-1 flex items-center flex-col gap-1 justify-center hover:bg-primary/5"
+            to="/dashboard"
+          >
+            <User className="h-5 w-5" />
+          </Link>
         </div>
       </nav>
 
@@ -60,6 +70,7 @@ export default function MainLayout() {
           </p>
         </div>
       </footer>
+      <InstallBanner />
     </div>
   );
 }
