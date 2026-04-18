@@ -39,7 +39,7 @@ export function MobileMenu() {
   const [open, setOpen] = useState(false);
   const { theme, setTheme } = useTheme();
   const { logout } = useAuth();
-  // For demo purposes, we'll hardcode authentication status. In a real app, this would come from your auth provider.
+  // Dev mode debugging
   let isAuthenticated = true;
   const { unreadCount } = useInAppNotifications();
   const { install } = usePWAInstall();
@@ -57,7 +57,7 @@ export function MobileMenu() {
         <Button variant="ghost" size="icon" className="relative">
           <Menu className="h-5 w-5" />
           {unreadCount > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 bg-primary text-white/90 font-bold text-[9px] px-1.5 py-0.5 rounded-full flex items-center justify-center">
+            <span className="absolute -top-0.5 -right-0.5 bg-destructive text-destructive-foreground text-[10px] min-w-4 h-4 rounded-full flex items-center justify-center px-0.5">
               {unreadCount > 9 ? "9+" : unreadCount}
             </span>
           )}
@@ -97,7 +97,16 @@ export function MobileMenu() {
             className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors"
           >
             <Search className="h-5 w-5" />
-            <span>Search Properties</span>
+            <span>Explore</span>
+          </Link>
+
+          <Link
+            to="/hunter"
+            onClick={handleClose}
+            className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors"
+          >
+            <Compass className="h-5 w-5" />
+            <span>Hunter</span>
           </Link>
 
           {/* Authenticated Only Section */}
@@ -105,7 +114,7 @@ export function MobileMenu() {
             <>
               <div className="h-px bg-border my-2" />
 
-              {/* Property Management */}
+              {/* Dashboard - Permission protected */}
               <Can permission="dashboard.view">
                 <Link
                   to="/dashboard"
@@ -117,7 +126,7 @@ export function MobileMenu() {
                 </Link>
               </Can>
 
-              <Can permission="listings.create">
+              {/* Post Property - Feature protected */}
                 <Link
                   to="/listings/create"
                   onClick={handleClose}
@@ -126,9 +135,7 @@ export function MobileMenu() {
                   <PlusCircle className="h-5 w-5" />
                   <span>Post Property</span>
                 </Link>
-              </Can>
 
-              <Can permission="listings.view">
                 <Link
                   to="/my-listings"
                   onClick={handleClose}
@@ -137,27 +144,41 @@ export function MobileMenu() {
                   <List className="h-5 w-5" />
                   <span>My Listings</span>
                 </Link>
+
+                <Link
+                  to="/saved"
+                  onClick={handleClose}
+                  className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors"
+                >
+                  <Heart className="h-5 w-5" />
+                  <span>Saved Properties</span>
+                </Link>
+
+              {/* Inspections - Feature protected */}
+              <Can permission="inspections.view">
+                <Link
+                  to="/inspections"
+                  onClick={handleClose}
+                  className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors"
+                >
+                  <Bell className="h-5 w-5" />
+                  <span>Inspections</span>
+                </Link>
               </Can>
 
-              {/* Engagement */}
-              <Link
-                to="/saved"
-                onClick={handleClose}
-                className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors"
-              >
-                <Heart className="h-5 w-5" />
-                <span>Saved Properties</span>
-              </Link>
+              {/* Properties Management - Feature protected */}
+              <Can permission="properties.manage">
+                <Link
+                  to="/properties"
+                  onClick={handleClose}
+                  className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors"
+                >
+                  <List className="h-5 w-5" />
+                  <span>Properties</span>
+                </Link>
+              </Can>
 
-              <Link
-                to="/hunter"
-                onClick={handleClose}
-                className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors"
-              >
-                <Compass className="h-5 w-5" />
-                <span>Hunter</span>
-              </Link>
-
+              {/* Notifications */}
               <Link
                 to="/notifications"
                 onClick={handleClose}
