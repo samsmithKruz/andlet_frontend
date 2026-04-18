@@ -9,7 +9,9 @@ import { NotFound } from "@/pages";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, RefreshCw, Home } from "lucide-react";
 import { Link } from "react-router-dom";
-import MainLayout from "@/components/layout/MainLayout";
+import MainLayout from "@/components/layout/main-layout";
+import SignupPage from "@/pages/SignupPage";
+import LoginPage from "@/pages/LoginPage";
 
 // Professional Error Boundary Component
 function ErrorBoundary() {
@@ -154,6 +156,16 @@ export const router = createBrowserRouter([
       createRoute("/", () => import("@/pages/HomePage"), { index: true }),
       createRoute("/contact", () => import("@/pages/ContactPage")),
     ],
+  },
+  {
+    path: "/signup",
+    errorElement: <ErrorBoundary />,
+    element: <SignupPage />,
+  },
+  {
+    path: "/login",
+    errorElement: <ErrorBoundary />,
+    element: <LoginPage />,
   },
   {
     path: "*",

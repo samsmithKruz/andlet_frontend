@@ -17,6 +17,15 @@ interface Subscription {
   expires_at?: string;
 }
 
+interface SignupData {
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+  accept_terms: boolean;
+  accept_promotional?: boolean;
+}
+
 interface AuthState {
   // State
   accessToken: string | null;
@@ -41,6 +50,8 @@ interface AuthState {
   hasAllPermissions: (permissions: string[]) => boolean;
   hasFeature: (feature: string) => boolean;
   hydrate: () => void;
+  signup: (data: SignupData) => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -183,6 +194,62 @@ export const useAuthStore = create<AuthState>()(
               subscription: parsed.state.subscription || null,
             });
           }
+        }
+      },
+
+      // Signup with email/password
+      signup: async (data: SignupData) => {
+        set({ isLoading: true });
+        try {
+          const response = await api.post("/auth/signup", data);
+
+          if (response.status !== 201 && response.status !== 200) {
+            throw new Error("Signup failed");
+          }
+
+          const {
+            access_token,
+            refresh_token,
+            user,
+            permissions,
+            subscription,
+          } = response.data;
+
+          // Auto-login after signup if token is returned
+          if (access_token) {
+            set({
+              accessToken: access_token,
+              refreshToken: refresh_token,
+              user: user,
+              permissions: permissions || [],
+              subscription: subscription || null,
+              isAuthenticated: true,
+              isLoading: false,
+            });
+          } else {
+            // Email verification required
+            set({ isLoading: false });
+          }
+        } catch (error) {
+          set({ isLoading: false });
+          throw error;
+        }
+      },
+
+      // Google OAuth signup/login
+      loginWithGoogle: async () => {
+        set({ isLoading: true });
+
+        try {
+          // Save current location to return after auth
+          const currentPath = window.location.pathname;
+          localStorage.setItem("auth_redirect_path", currentPath);
+
+          // Redirect to Laravel Socialite endpoint
+          window.location.href = `${import.meta.env.VITE_API_URL}/auth/google/redirect`;
+        } catch (error) {
+          set({ isLoading: false });
+          throw error;
         }
       },
     }),

@@ -11,6 +11,7 @@ import { OfflineIndicator } from "./components/ui/offline-indicator.tsx";
 import { PageLoader } from "./components/ui/page-loader.tsx";
 import { InAppNotificationProvider } from "./providers/in-app-notification-provider.tsx";
 import { PushNotificationProvider } from "./providers/push-notification-provider.tsx";
+import { handleAuthCallback } from "./lib/auth-handler.ts";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -43,3 +44,8 @@ register({
     });
   },
 });
+
+const redirectPath = handleAuthCallback();
+if (redirectPath) {
+  window.location.href = redirectPath;
+}
