@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { isRunningAsPWA } from "@/lib/pwa-detection";
 import { showToast } from "@/lib/toast";
 import { usePWAInstall } from "@/hooks/usePWAInstall";
+import { Link } from "react-router-dom";
 
 const BANNER_DISMISSED_KEY = "andlet-banner-dismissed-timestamp";
 const BANNER_COOLDOWN_MS = 60000; // 60 seconds
@@ -42,14 +43,6 @@ export function InstallBanner() {
     }
   };
 
-  const handleContinueInApp = () => {
-    showToast.info("Opening app...", {
-      description: "If the app doesn't open, please install it first",
-      duration: 3000,
-    });
-    window.location.href = window.location.href;
-  };
-
   const handleDismiss = () => {
     setShowBanner(false);
     localStorage.setItem(BANNER_DISMISSED_KEY, Date.now().toString());
@@ -86,15 +79,16 @@ export function InstallBanner() {
                   <Download className="h-3 w-3" />
                   Install
                 </Button>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={handleContinueInApp}
-                  className="gap-2 h-8 text-xs text-primary-foreground hover:bg-primary-foreground/20"
+                <a
+                  href={window.location.href}
+                  className="
+                  group/button inline-flex shrink-0 items-center justify-center rounded-md border border-transparent bg-clip-padding font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4
+                  aria-expanded:bg-muted aria-expanded:text-foreground
+                  gap-2 h-8 p-2 text-xs text-primary-foreground hover:bg-primary-foreground/20"
                 >
                   <ExternalLink className="h-3 w-3" />
                   Already have it? Open in App
-                </Button>
+                </a>
               </div>
             </div>
           </div>

@@ -4,20 +4,34 @@ export const useAuth = () => {
   const {
     user,
     accessToken,
+    permissions,
+    subscription,
+    allFeatures,
     isAuthenticated,
     isLoading,
     login,
     logout,
     refreshTokens,
+    hasPermission,
+    hasAnyPermission,
+    hasAllPermissions,
+    hasFeature,
   } = useAuthStore();
 
   return {
     user,
     accessToken,
+    permissions,
+    subscription,
+    allFeatures,
     isAuthenticated,
     isLoading,
     login,
     logout,
     refreshTokens,
+    hasPermission,
+    hasAnyPermission,
+    hasAllPermissions,
+    hasFeature,
   };
 };

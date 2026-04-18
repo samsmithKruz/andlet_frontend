@@ -53,7 +53,7 @@ class BackgroundQueue {
     payload: QueueActionPayload,
     options?: { maxRetries?: number },
   ): Promise<any> {
-    const id = crypto.randomUUID();
+    const id = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
     const queuedAction: StoredQueuedAction = {
       id,

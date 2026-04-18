@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { RouterProvider } from "react-router-dom";
@@ -8,13 +8,22 @@ import { showToast } from "./lib/toast.ts";
 import { ThemeProvider } from "./providers/theme-provider.tsx";
 import { Toaster } from "./components/ui/sonner.tsx";
 import { OfflineIndicator } from "./components/ui/offline-indicator.tsx";
+import { PageLoader } from "./components/ui/page-loader.tsx";
+import { InAppNotificationProvider } from "./providers/in-app-notification-provider.tsx";
+import { PushNotificationProvider } from "./providers/push-notification-provider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider>
-      <OfflineIndicator />
-      <RouterProvider router={router} />
-      <Toaster />
+      <InAppNotificationProvider>
+        <PushNotificationProvider>
+          <OfflineIndicator />
+          <Suspense fallback={<PageLoader fullscreen />}>
+            <RouterProvider router={router} />
+          </Suspense>
+          <Toaster />
+        </PushNotificationProvider>
+      </InAppNotificationProvider>
     </ThemeProvider>
   </StrictMode>,
 );

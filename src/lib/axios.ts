@@ -14,6 +14,8 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+let refreshPromise: Promise<void> | null = null;
+
 // Response interceptor to handle token refresh
 api.interceptors.response.use(
   (response) => response,
@@ -21,11 +23,24 @@ api.interceptors.response.use(
     const originalRequest = error.config;
     const { refreshTokens, logout } = useAuthStore.getState();
 
+    // Prevent infinite loop if refresh endpoint itself returns 401
+    if (originalRequest.url?.includes("/refresh")) {
+      logout();
+      return Promise.reject(error);
+    }
+
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
-        await refreshTokens();
+        if (!refreshPromise) {
+          refreshPromise = refreshTokens().finally(() => {
+            refreshPromise = null;
+          });
+        }
+
+        await refreshPromise;
+
         const newToken = useAuthStore.getState().accessToken;
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
         return api(originalRequest);
