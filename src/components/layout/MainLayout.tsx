@@ -4,6 +4,7 @@ import { Home, Search, User } from "lucide-react";
 import { Header } from "@/components/layout/header";
 import { InstallBanner } from "@/components/ui/install-banner";
 import { BottomNav } from "./bottom-nav";
+import { PostFAB } from "../ui/post-fab";
 
 export default function MainLayout() {
   return (
@@ -17,6 +18,9 @@ export default function MainLayout() {
 
       {/* Mobile bottom navigation */}
       <BottomNav />
+
+      {/* Posting Button */}
+      <PostFAB />
 
       {/* Footer for desktop */}
       <footer className="hidden lg:block border-t mt-auto">
