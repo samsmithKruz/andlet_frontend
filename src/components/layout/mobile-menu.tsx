@@ -38,9 +38,7 @@ import { isRunningAsPWA } from "@/lib/pwa-detection";
 export function MobileMenu() {
   const [open, setOpen] = useState(false);
   const { theme, setTheme } = useTheme();
-  const { logout } = useAuth();
-  // Dev mode debugging
-  let isAuthenticated = true;
+  const { isAuthenticated, logout } = useAuth();
   const { unreadCount } = useInAppNotifications();
   const { install } = usePWAInstall();
 
@@ -299,7 +297,7 @@ export function MobileMenu() {
           ) : (
             <div className="flex flex-col gap-2 px-3">
               <Link
-                to="/auth?mode=signup"
+                to="/signup"
                 onClick={handleClose}
                 className="flex items-center justify-center gap-2 px-3 py-2 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors w-full cursor-pointer"
               >
@@ -307,7 +305,7 @@ export function MobileMenu() {
                 <span>Sign Up</span>
               </Link>
               <Link
-                to="/auth?mode=login"
+                to="/login"
                 onClick={handleClose}
                 className="flex items-center justify-center gap-2 px-3 py-2 rounded-md border border-border hover:bg-muted transition-colors w-full cursor-pointer"
               >
