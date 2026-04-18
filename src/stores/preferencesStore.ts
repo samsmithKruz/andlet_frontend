@@ -82,7 +82,7 @@ const scheduleSync = (syncFn: () => Promise<void>) => {
 
 export const usePreferencesStore = create<PreferencesState>()(
   persist(
-    (set, get) => ({
+    (set, _get) => ({
       // Default values
       theme: "system",
       notifications: true,
