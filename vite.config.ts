@@ -13,6 +13,8 @@ export default defineConfig({
       includeAssets: ["logo.svg", "logo-maskable.svg"],
       manifest: false, // We're using external manifest.json
       workbox: {
+        navigateFallback: "/index.html",
+        navigateFallbackDenylist: [/^\/api\//],
         globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
         runtimeCaching: [
           {
