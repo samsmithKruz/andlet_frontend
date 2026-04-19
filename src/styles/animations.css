@@ -1,0 +1,434 @@
+/**
+ * Andlet Animation System
+ * Lightweight, GPU-accelerated animations
+ */
+
+/* CSS Custom Properties - Synced with TypeScript tokens */
+:root {
+  --animation-duration: 400ms;
+  --animation-delay: 0ms;
+  --animation-easing: ease-out;
+
+  /* Duration tokens */
+  --duration-instant: 100ms;
+  --duration-fast: 200ms;
+  --duration-normal: 400ms;
+  --duration-slow: 600ms;
+  --duration-glacial: 1000ms;
+
+  /* Easing curves */
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.42, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.58, 1);
+  --ease-in-out: cubic-bezier(0.42, 0, 0.58, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ============================================
+   Fade Animations (GPU-friendly: opacity only)
+   ============================================ */
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-down {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-left {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fade-right {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ============================================
+   Slide Animations (transform only - no opacity change)
+   ============================================ */
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-left {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-right {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* ============================================
+   Scale Animations
+   ============================================ */
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scale-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+/* ============================================
+   Attention Seekers
+   ============================================ */
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ============================================
+   Animation Classes
+   ============================================ */
+
+.animate-fade-in,
+.animate-fade-up,
+.animate-fade-down,
+.animate-fade-left,
+.animate-fade-right,
+.animate-slide-up,
+.animate-slide-down,
+.animate-slide-left,
+.animate-slide-right,
+.animate-scale-in,
+.animate-scale-out,
+.animate-pulse,
+.animate-bounce {
+  animation-duration: var(--animation-duration, 400ms);
+  animation-delay: var(--animation-delay, 0ms);
+  animation-timing-function: var(--animation-easing, ease-out);
+  animation-fill-mode: forwards;
+}
+
+/* Fade */
+.animate-fade-in {
+  animation-name: fade-in;
+}
+.animate-fade-up {
+  animation-name: fade-up;
+}
+.animate-fade-down {
+  animation-name: fade-down;
+}
+.animate-fade-left {
+  animation-name: fade-left;
+}
+.animate-fade-right {
+  animation-name: fade-right;
+}
+
+/* Slide */
+.animate-slide-up {
+  animation-name: slide-up;
+}
+.animate-slide-down {
+  animation-name: slide-down;
+}
+.animate-slide-left {
+  animation-name: slide-left;
+}
+.animate-slide-right {
+  animation-name: slide-right;
+}
+
+/* Scale */
+.animate-scale-in {
+  animation-name: scale-in;
+}
+.animate-scale-out {
+  animation-name: scale-out;
+}
+
+/* Attention */
+.animate-pulse {
+  animation-name: pulse;
+}
+.animate-bounce {
+  animation-name: bounce;
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+
+/* Initial hidden states for scroll reveal */
+.anim-hidden {
+  opacity: 0;
+}
+
+.anim-hidden-up {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.anim-hidden-down {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+.anim-hidden-left {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.anim-hidden-right {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.anim-hidden-scale {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+/* Stagger children utility */
+.stagger-children > * {
+  opacity: 0;
+  animation: fade-up var(--animation-duration, 400ms)
+    var(--animation-easing, ease-out) forwards;
+}
+
+.stagger-children > *:nth-child(1) {
+  animation-delay: 0ms;
+}
+.stagger-children > *:nth-child(2) {
+  animation-delay: 50ms;
+}
+.stagger-children > *:nth-child(3) {
+  animation-delay: 100ms;
+}
+.stagger-children > *:nth-child(4) {
+  animation-delay: 150ms;
+}
+.stagger-children > *:nth-child(5) {
+  animation-delay: 200ms;
+}
+.stagger-children > *:nth-child(6) {
+  animation-delay: 250ms;
+}
+.stagger-children > *:nth-child(7) {
+  animation-delay: 300ms;
+}
+.stagger-children > *:nth-child(8) {
+  animation-delay: 350ms;
+}
+.stagger-children > *:nth-child(9) {
+  animation-delay: 400ms;
+}
+.stagger-children > *:nth-child(10) {
+  animation-delay: 450ms;
+}
+
+/* Shimmer loading effect */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 25%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 75%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Dark mode shimmer */
+.dark .shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 25%,
+    rgba(255, 255, 255, 0.06) 50%,
+    rgba(255, 255, 255, 0.03) 75%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+}
+
+/* ============================================
+   Motion Preference (Accessibility)
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .animate-fade-in,
+  .animate-fade-up,
+  .animate-fade-down,
+  .animate-fade-left,
+  .animate-fade-right,
+  .animate-slide-up,
+  .animate-slide-down,
+  .animate-slide-left,
+  .animate-slide-right,
+  .animate-scale-in,
+  .animate-pulse,
+  .animate-bounce {
+    animation-duration: 0.01ms !important;
+  }
+
+  /* Ensure elements are visible when animations are disabled */
+  .anim-hidden,
+  .anim-hidden-up,
+  .anim-hidden-down,
+  .anim-hidden-left,
+  .anim-hidden-right,
+  .anim-hidden-scale {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .stagger-children > * {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+}
+
+/* ============================================
+   Performance Optimizations
+   ============================================ */
+
+/* Promote animated elements to GPU layer */
+.animate-fade-in,
+.animate-fade-up,
+.animate-fade-down,
+.animate-fade-left,
+.animate-fade-right,
+.animate-slide-up,
+.animate-slide-down,
+.animate-slide-left,
+.animate-slide-right,
+.animate-scale-in,
+.animate-scale-out {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Remove will-change after animation ends (prevents memory bloat) */
+.animate-fade-in.animation-complete,
+.animate-fade-up.animation-complete,
+.animate-fade-down.animation-complete,
+.animate-fade-left.animation-complete,
+.animate-fade-right.animation-complete,
+.animate-slide-up.animation-complete,
+.animate-slide-down.animation-complete,
+.animate-slide-left.animation-complete,
+.animate-slide-right.animation-complete,
+.animate-scale-in.animation-complete {
+  will-change: auto;
+}
+
+

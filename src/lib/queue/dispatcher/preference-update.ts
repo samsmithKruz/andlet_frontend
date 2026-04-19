@@ -15,3 +15,14 @@ export const preferenceUpdateDispatcher: Dispatcher<
     return { success: true, data: response.data };
   },
 };
+
+export const preferenceFetchDispatcher: Dispatcher<
+  "preference-fetch",
+  Record<string, never>
+> = {
+  type: "preference-fetch",
+  execute: async () => {
+    const response = await api.get("/user/preferences");
+    return { success: true, data: response.data };
+  },
+};

@@ -32,7 +32,7 @@ export function Header() {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 shrink-0">
           <img src="/logo.svg" alt="Andlet Logo" width={32} height={32} />
-          <span className="font-bold text-lg text-primary hidden sm:inline">
+          <span className="font-bold text-lg text-primary">
             Andlet
           </span>
         </Link>

@@ -3,7 +3,10 @@ import type {
   QueueActionPayload,
   QueueActionResult,
 } from "../types";
-import { preferenceUpdateDispatcher } from "./preference-update";
+import {
+  preferenceFetchDispatcher,
+  preferenceUpdateDispatcher,
+} from "./preference-update";
 import { getDispatcher, registerDispatcher } from "./handlers";
 
 export async function dispatchAction(
@@ -29,4 +32,6 @@ export async function dispatchAction(
   }
 }
 
-[preferenceUpdateDispatcher].forEach((item) => registerDispatcher(item));
+[preferenceUpdateDispatcher, preferenceFetchDispatcher].forEach((item) =>
+  registerDispatcher(item),
+);

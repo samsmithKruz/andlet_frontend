@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./routes";
-import { register } from "./pwa/serviceWorkerRegistration.ts";
+import { register } from "./lib/serviceWorkerRegistration.ts";
 import { showToast } from "./lib/toast.ts";
 import { ThemeProvider } from "./providers/theme-provider.tsx";
 import { Toaster } from "./components/ui/sonner.tsx";

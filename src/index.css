@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/inter";
+@import "./styles/animations.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -15,7 +16,7 @@
   --popover-foreground: oklch(0.145 0 0);
 
   /* Primary: #2B9C64 converted to OKLCH */
-  --primary: oklch(0.62 0.10 156);
+  --primary: oklch(0.62 0.1 156);
   --primary-foreground: oklch(0.985 0 0);
 
   /* Secondary: softer green */
@@ -104,7 +105,8 @@
 }
 
 @theme inline {
-  --font-sans: 'Inter Variable', sans-serif;
+  --font-sans: "Inter Variable", sans-serif;
+  --font-heading: 'Plus Jakarta Sans', sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -156,5 +158,14 @@
 
   html {
     @apply font-sans;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading tracking-tight;
   }
 }
