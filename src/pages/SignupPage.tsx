@@ -284,7 +284,7 @@ export default function SignupPage() {
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
-                  <FormLabel className="text-sm font-normal">
+                  <FormLabel className="text-sm font-normal inline">
                     I agree to the{" "}
                     <Link
                       to="/terms"

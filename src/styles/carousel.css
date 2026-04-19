@@ -1,0 +1,110 @@
+/* src/styles/carousel.css */
+
+.carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  cursor: grab;
+  user-select: none;
+}
+
+.carousel:active {
+  cursor: grabbing;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-slide {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+/* Prevent scrolling while dragging on touch devices */
+.carousel.dragging {
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+}
+
+/* Carousel Dots */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: hsl(var(--muted-foreground) / 0.3);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+}
+
+.carousel-dot:hover {
+  background-color: hsl(var(--muted-foreground) / 0.5);
+}
+
+.carousel-dot.active {
+  width: 24px;
+  border-radius: 4px;
+  background-color: hsl(var(--primary));
+}
+
+/* Carousel Arrows */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity 0.2s ease,
+    background-color 0.2s ease;
+  z-index: 10;
+}
+
+.carousel-container:hover .carousel-arrow {
+  opacity: 1;
+}
+
+.carousel-arrow:hover {
+  background-color: hsl(var(--accent));
+}
+
+.carousel-arrow:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.carousel-arrow-left {
+  left: 16px;
+}
+
+.carousel-arrow-right {
+  right: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .carousel-arrow {
+    display: none;
+  }
+}
